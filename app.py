@@ -2,7 +2,6 @@ import streamlit as st
 from summarization import summ
 from namecontext import nameandcontext
 from transcript import extract
-from summ import sumnew
 
 st.set_page_config(page_title="STM", layout="wide")
 
