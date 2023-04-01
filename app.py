@@ -1,7 +1,8 @@
 import streamlit as st
-from summarization import summarization_model
+from summarization import summ
 from namecontext import nameandcontext
 from transcript import extract
+from summ import sumnew
 
 st.set_page_config(page_title="STM", layout="wide")
 
@@ -13,7 +14,6 @@ def main():
     if speech_file is not None:
         transcript, names, time = extract(speech_file)
         result = nameandcontext(transcript, "Sanmitha")
-        # summary = summarization_model(transcript)
         st.header("Results:-")
         st.subheader(f"Names of the Participants:")
         st.text(f"{names}")
@@ -23,7 +23,8 @@ def main():
         st.subheader(f"Where you mentioned in the meet:")
         st.text(result)
         st.subheader(f"Summarization:")
-        # st.text(summary)
+        summary = summ(transcript)
+        st.text(summary)
 
 
 if __name__ == '__main__':
