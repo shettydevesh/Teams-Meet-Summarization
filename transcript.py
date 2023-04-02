@@ -14,7 +14,7 @@ def extract(path):
         finalText.append(line[2])
         finalText.append("\n")
         time = line[0]
-        time = time[-12:]
+        time = time[-11:]
         if (line[1] not in names):
             names.append(line[1])
     return "".join(finalText), "\n".join(names), time
