@@ -48,8 +48,8 @@ def main():
         transcript_audio = stt(audio_file)
         st.subheader(f"Transcript:")
         st.text(transcript_audio[:500] + "\n" + ".....")
-        st.subheader(f"Summarization:")
-        st.write(audio_summary)
+        # st.subheader(f"Summarization:")
+        # st.write(audio_summary)
 
 
 if __name__ == '__main__':

@@ -14,8 +14,10 @@ def extract(path):
         finalText.append(line[2])
         finalText.append("\n")
         time = line[0]
-        time = time[-11:]
+        hour = time[-11:-10]
+        min = time[-9:-7]
+        sec = time[-6:-4]
         if (line[1] not in names):
             names.append(line[1])
     print("Extraction done")
-    return "\n".join(finalText), "\n".join(names), time
+    return "\n".join(finalText), "\n".join(names), f"{hour}hr {min}min {sec} seconds"
