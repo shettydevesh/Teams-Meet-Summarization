@@ -17,4 +17,5 @@ def extract(path):
         time = time[-11:]
         if (line[1] not in names):
             names.append(line[1])
-    return "".join(finalText), "\n".join(names), time
+    print("Extraction done")
+    return "\n".join(finalText), "\n".join(names), time
