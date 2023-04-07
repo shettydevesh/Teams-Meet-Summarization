@@ -1,8 +1,5 @@
 import nltk
 
-from transformers import pipeline, AutoModelForSeq2SeqLM, AutoTokenizer
-import torch
-
 
 def search_pattern(text, pattern):
     sent_text = nltk.sent_tokenize(text)
