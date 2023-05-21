@@ -1,7 +1,12 @@
-import nltk
-import pandas as pd
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 
-text = """
+# Load the tokenizer and model from the saved directory
+tokenizer = AutoTokenizer.from_pretrained("C:/Users/Shetty/Downloads/tokenizer")
+
+model = AutoModelForQuestionAnswering.from_pretrained("C:/Users/Shetty/Downloads/QNA_Model")
+
+# Now you can use the model for question answering as before
+context = """
 Good afternoon, everyone. I want to welcome you all to our annual meeting for the year 2023. It's great to see all of you here today. I hope you all had a productive year and have some exciting updates to share with us. As the President of this club, I am proud to say that we had an incredible year in 2022. We organized several successful events that brought our members and the community together. Our basketball team also made it to the finals, and we couldn't be prouder of them. It's a testament to the hard work and dedication of our players and coaches. In terms of our finances, I am pleased to announce that we had a successful year. We generated a significant amount of revenue from our events and sponsorships, and our club's balance remains healthy. But it's not just about the numbers. It's about the sense of community and belonging that our club provides. We had 80 active members last year, and we welcomed 15 new members to our family. I want to thank all of you for your contributions to the club's success. Your hard work and dedication have helped us achieve our goals, and I am confident that we will continue to grow and thrive in the years to come. So, without further ado, let's begin the meeting and discuss our plans for the year ahead. Thank you all again for being here today.
 
 
@@ -21,44 +26,22 @@ Good afternoon, everyone. As the Vice President of this club, I am proud to say 
 Thank you to all the members who attended this year's Sports Club Association Annual Meeting. I am proud to say that we have accomplished a lot in the previous year and have set some exciting goals for the year ahead. We have a strong team of leaders who are committed to making this club a welcoming and inclusive space for everyone. I encourage all members to participate in the upcoming events and activities and take advantage of the opportunities to connect with fellow sports enthusiasts. As we move forward, let us continue to support each other and work towards our shared goals. Let us continue to promote diversity and inclusivity in our club and in the larger community. Thank you again for your continued support, and I look forward to another successful year ahead. Have a great day!"""
 
 
-def search_pattern(text, pattern):
-    sent_text = nltk.sent_tokenize(text)
 
-    entry = []
-
-    result = []
-
-    for line_number, line in enumerate(sent_text):
-        if pattern in line:
-            index = line_number
-            result.append(sent_text[index - 1])
-            result.append(sent_text[index])
-            result.append(sent_text[index + 1])
-        if len(result) > 2:
-            entry.append(result)
-        result = []
-
-    entries = []
-
-    for ent in entry:
-        joined_list = [" ".join(ent)]
-        entries.append(joined_list)
-
-    return entries
+def extractor(query, context):
+    inputs = tokenizer(query, context, return_tensors='pt')
+    outputs = model(**inputs)
+    start_scores, end_scores = outputs.start_logits, outputs.end_logits
+    start_index = start_scores.argmax(dim=-1).item()
+    end_index = end_scores.argmax(dim=-1).item()
+    answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(inputs['input_ids'][0][start_index:end_index+1]))
+    return answer
 
 
-def run(pattern):
-    result = search_pattern(text, pattern)
-    # print(result)
-
-    # results = []
-
-    # for res in result:
-    #     res = summ(res)
-    #     print(res)
-    #     results.append(res)
-    df = pd.DataFrame(result, columns=['Context'])
-    df.index = range(1, len(df) + 1)
-    print("Context Extracted")
-
-    return df
+# while True:
+#     query = input("Enter your question: ")
+    
+#     if query.lower() == "quit":
+#         break
+#     else:
+#         answer = extractor(query, context)
+#         print(answer)

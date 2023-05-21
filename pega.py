@@ -32,20 +32,14 @@ def summarization_model(transcript):
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_ckpt)
     model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(model_ckpt)
 
-    # Check if a GPU is available and use it if possible
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
-    model_pegasus.to(device)
-
     chunks = create_chunks(transcript)
-
+    print("Chunks Created")
     gen_kwargs = {"length_penalty": 0.8, "num_beams": 8, "max_length": 128, "min_length":30, "do_sample":False}
 
     pipe = pipeline("summarization", model=model_pegasus,
                     tokenizer=tokenizer)
 
-    # print("\nReference Summary:")
-    # print(reference)
     res = pipe(chunks, **gen_kwargs)
     result = ' '.join([summ['summary_text'] for summ in res])
+    print("Summary done")
     return result

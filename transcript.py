@@ -20,4 +20,4 @@ def extract(path):
         if (line[1] not in names):
             names.append(line[1])
     print("Extraction done")
-    return "\n".join(finalText), "\n".join(names), f"{hour}hr {min}min {sec} seconds"
+    return "\n".join(finalText), ",".join(names), f"{hour}hr {min}min {sec} seconds"
