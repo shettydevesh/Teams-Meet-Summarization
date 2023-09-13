@@ -1,6 +1,7 @@
 from transformers import pipeline, AutoModelForSeq2SeqLM, AutoTokenizer
 import torch
 
+
 def create_chunks(transcript):
     max_chunk = 500
     ARTICLE = transcript.strip()
@@ -24,17 +25,19 @@ def create_chunks(transcript):
         chunks[chunk_id] = ' '.join(chunks[chunk_id])
     return chunks
 
+
 def summarization_model(transcript):
 
-    model_ckpt = "D:/STM/deepblue/server/python/pegasus-samsum-model"
-    tokenizer_ckpt = "D:/STM/deepblue/server/python/tokenizer"
+    model_ckpt = "D:/TE Mini Project/pegasus-samsum-model"
+    tokenizer_ckpt = "D:/TE Mini Project/tokenizer"
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_ckpt)
     model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(model_ckpt)
 
     chunks = create_chunks(transcript)
     print("Chunks Created")
-    gen_kwargs = {"length_penalty": 0.8, "num_beams": 8, "max_length": 128, "min_length":30, "do_sample":False}
+    gen_kwargs = {"length_penalty": 0.8, "num_beams": 8,
+                  "max_length": 128, "min_length": 30, "do_sample": False}
 
     pipe = pipeline("summarization", model=model_pegasus,
                     tokenizer=tokenizer)

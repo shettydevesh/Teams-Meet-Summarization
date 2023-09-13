@@ -46,14 +46,14 @@ def main():
         st.table(et)
         st.subheader("Tasks: ")
         st.table(action)
-    elif audio_file is not None:
-        audio_transcript = stt(audio_file)
-        summary_audio = summarization_model(audio_transcript)
-        st.header("Results:-")
-        st.subheader(f"Transcript:")
-        st.write(f"{audio_transcript}")
-        st.subheader("Summary: ")
-        st.write(f"{summary_audio}")
+    # elif audio_file is not None:
+    #     audio_transcript = stt(audio_file)
+    #     summary_audio = summarization_model(audio_transcript)
+    #     st.header("Results:-")
+    #     st.subheader(f"Transcript:")
+    #     st.write(f"{audio_transcript}")
+    #     st.subheader("Summary: ")
+    #     st.write(f"{summary_audio}")
 
 
 if __name__ == '__main__':
